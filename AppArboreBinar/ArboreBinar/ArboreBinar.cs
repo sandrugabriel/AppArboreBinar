@@ -9,10 +9,11 @@ using AppArboreBinar.ArboreBinar.interfacecs;
 using System.Windows.Forms;
 using System.Web.Services.Description;
 using System.Xml.Linq;
+using AppArboreBinar.View.Panels;
 
 namespace AppArboreBinar.ArboreBinar
 {
-    public class ArboreBinar<T> : IArbore<T> where T : Panel, IComparable<T>
+    public class ArboreBinar<T> : IArbore<T> where T : PnlCard, IComparable<T>
     {
 
         private TreeNode<T> _root = null;
@@ -232,6 +233,86 @@ namespace AppArboreBinar.ArboreBinar
             } while (treeNode != null);
 
             return null;
+        }
+
+        public TreeNode<T> find(TreeNode<T> current, T cautat)
+        {
+            ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
+
+            TreeNode<T> treeNode = current;
+
+            T data;
+
+            do
+            {
+
+                if (treeNode.Left != null)
+                {
+                    coada.push(treeNode.Left);
+
+                }
+
+                if (treeNode.Right != null)
+                {
+                    coada.push(treeNode.Right);
+                }
+
+                if (treeNode.Data.CompareTo(cautat) == 0)
+                {
+                    return treeNode;
+                }
+
+                treeNode = coada.top();
+
+                coada.pop();
+
+            } while (treeNode != null);
+
+            return null;
+        }
+
+        public void setT(TreeNode<T> tree, T luat, T pus)
+        {
+
+            TreeNode<T> card1 = find(tree, luat);
+            TreeNode<T> card2 = find(tree, pus);
+
+            T aux = card1.Data;
+            card1.Data = card2.Data;
+            card2.Data = aux;
+
+        }
+
+        public string update(TreeNode<T> node)
+        {
+            ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
+            string t = "";
+            TreeNode<T> treeNode = _root;
+
+            T data;
+
+            do
+            {
+                t += treeNode.Data.btnNr.Text + ",";
+
+                if (treeNode.Left != null)
+                {
+                    coada.push(treeNode.Left);
+                }
+
+                if (treeNode.Right != null)
+                {
+                    coada.push(treeNode.Right);
+                }
+
+                treeNode = coada.top();
+
+                coada.pop();
+
+            } while (treeNode != null);
+
+            return t;
+
         }
 
     }

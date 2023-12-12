@@ -23,5 +23,9 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
         string getPartByPanel(T mainPanel);
 
         T getByPanel(TreeNode<T> node, T mainPanel);
+
+        void setT(TreeNode<T> tree, T luat, T pus);
+
+        string update(TreeNode<T> node);
     }
 }

@@ -256,6 +256,9 @@
     <Compile Include="View\Panels\PnlHome.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\Panels\PnlLoad.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\Panels\PnlSlide.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -24,6 +24,8 @@ namespace AppArboreBinar.View.Panels
 
             this.Name = "PnlCard";
             this.Size = new System.Drawing.Size(146, 63);
+            this.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+
 
             this.btnNr = new Button();
             this.eliThis = new BunifuElipse();
@@ -33,14 +35,17 @@ namespace AppArboreBinar.View.Panels
 
             this.Controls.Add(this.btnNr);
 
+            this.btnNr.AllowDrop = true;
             this.btnNr.Dock = DockStyle.Fill;
             this.btnNr.FlatAppearance.BorderSize = 0;
             this.btnNr.FlatStyle = FlatStyle.Flat;
             this.btnNr.Text = Data.ToString();
-            this.btnNr.BackColor = SystemColors.AppWorkspace;
+            this.btnNr.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnNr.ForeColor = System.Drawing.Color.White;
+            this.btnNr.Tag = this;
 
+            this.btnNr.MouseDown += this_MouseDown;
 
-           
         }
 
         int IComparable<PnlCard>.CompareTo(PnlCard other)
@@ -59,5 +64,14 @@ namespace AppArboreBinar.View.Panels
                 return 0;
             }
         }
+
+        private void this_MouseDown(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+
+            this.DoDragDrop(button, DragDropEffects.Move);
+
+        }
+
     }
 }

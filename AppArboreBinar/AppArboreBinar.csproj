@@ -250,6 +250,9 @@
     <Compile Include="View\Panels\PnlCard.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\Panels\PnlDelete.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\Panels\PnlGenerareArbore.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AppArboreBinar.ArboreBinar.interfacecs;
 using System.Windows.Forms;
+using System.Web.Services.Description;
+using System.Xml.Linq;
 
 namespace AppArboreBinar.ArboreBinar
 {
@@ -153,7 +155,45 @@ namespace AppArboreBinar.ArboreBinar
             Console.WriteLine("User-ul Minim este:\n" + mini.ToString());
         }
 
-        public void getByPanel(T mainPanel, string part, T panel)
+        public T getByPanel(TreeNode<T> node, T panel)
+        {
+            ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
+
+            TreeNode<T> treeNode = _root;
+
+            T data;
+
+            do
+            {
+
+                if (treeNode.Left != null)
+                {
+                    coada.push(treeNode.Left);
+                    if (treeNode.Left.Data.CompareTo(panel) == 0)
+                    {
+                        return treeNode.Data;
+                    }
+                }
+
+                if (treeNode.Right != null)
+                {
+                    coada.push(treeNode.Right);
+                    if (treeNode.Right.Data.CompareTo(panel) == 0)
+                    {
+                        return treeNode.Data;
+                    }
+                }
+
+                treeNode = coada.top();
+
+                coada.pop();
+
+            } while (treeNode != null);
+
+            return null;
+        }
+
+        public string getPartByPanel(T mainPanel)
         {
 
             ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
@@ -165,25 +205,23 @@ namespace AppArboreBinar.ArboreBinar
             do
             {
                 //Console.WriteLine(treeNode.Data);
-                
+
 
                 if (treeNode.Left != null)
                 {
                     coada.push(treeNode.Left);
-                    if (treeNode.Left.Data.CompareTo(mainPanel) == 1)
+                    if (treeNode.Left.Data.CompareTo(mainPanel) == 0)
                     {
-                        panel = treeNode.Data;
-                        part = "left";
+                        return "left";
                     }
                 }
 
                 if (treeNode.Right != null)
                 {
                     coada.push(treeNode.Right);
-                    if (treeNode.Right.Data.CompareTo(mainPanel) == 1)
+                    if (treeNode.Right.Data.CompareTo(mainPanel) == 0)
                     {
-                        panel = treeNode.Data;
-                        part = "right";
+                        return "right";
                     }
                 }
 
@@ -193,7 +231,7 @@ namespace AppArboreBinar.ArboreBinar
 
             } while (treeNode != null);
 
-
+            return null;
         }
 
     }

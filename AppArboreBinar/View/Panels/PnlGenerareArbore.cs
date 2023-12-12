@@ -85,7 +85,16 @@ namespace AppArboreBinar.View.Panels
         private void btnGen_Click(object sender, EventArgs e)
         {
             numbers.Clear();
+            this.Controls.Clear();
+            allCards.Clear();
+            arbore = new ArboreBinar<PnlCard>();
 
+            this.Controls.Add(this.lblTile);
+            this.Controls.Add(this.pctDesign);
+            this.Controls.Add(this.txtText);
+            this.Controls.Add(this.btnGen);
+
+            int semn = 0;
             string[] prop = txtText.Text.Split(',');
 
             foreach (string s in prop)
@@ -94,26 +103,34 @@ namespace AppArboreBinar.View.Panels
                 if (int.TryParse(s, out int rezult) == true)
                 {
                     numbers.Add(int.Parse(s));
-                    
+
                 }
                 else
                 {
-                    MessageBox.Show("Nu a-ti introdus bine numerele!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    semn = 1;
                 }
+            }
+
+            if (semn == 1)
+            {
+                MessageBox.Show("Nu a-ti introdus bine numerele!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                carduriDinamice();
             }
 
             /*  foreach (int nr in numbers) {
 
                   MessageBox.Show(nr.ToString());
               }*/
-            carduriDinamice();
         }
 
         public void carduriDinamice()
         {
-            //7,-1,9,18,31
+            //7,-1,9,18,31,2
             PnlCard mainCard = new PnlCard(form, numbers[0]);
-            mainCard.Location = new Point( 688, 310);
+            mainCard.Location = new Point(688, 310);
 
             allCards.Add(mainCard);
             arbore.add(mainCard, arbore.getNode());
@@ -122,31 +139,33 @@ namespace AppArboreBinar.View.Panels
 
             for(int i=1; i<numbers.Count; i++) {
 
+              //  MessageBox.Show(numbers[i].ToString());
                 PnlCard card = new PnlCard(form, numbers[i]);
             
                 arbore.add(card,arbore.getNode());
                 allCards.Add(card);
             }
 
-            for(int i=0;i<allCards.Count;i++)
+            // MessageBox.Show(arbore.getNode().Left.Right.Data.btnNr.Text);
+
+            for (int i = 0; i < allCards.Count; i++)
             {
-                if (i > 0)
+                // MessageBox.Show(allCards[i].btnNr.Text);
+
+                string part = arbore.getPartByPanel(allCards[i]);
+                PnlCard card1 = arbore.getByPanel(arbore.getNode(), allCards[i]);
+
+                //         MessageBox.Show(card1.btnNr.Text);
+                if (card1 != null)
                 {
-                    string part = "";
-                    PnlCard card1 = null;
+                    if (part == "left")
+                        allCards[i].Location = new Point(card1.Location.X - 200, card1.Location.Y + 80);
+                    if(part == "right")
+                        allCards[i].Location = new Point(card1.Location.X + 180, card1.Location.Y + 80);
 
-                    arbore.getByPanel(allCards[i], part, card1);
-
-                    MessageBox.Show(part);
-                    if (card1 != null)
-                    {
-
-                        allCards[i].Location = new Point(card1.Location.X, card1.Location.Y + 80);
-                        this.Controls.Add(allCards[i]);
-                    }
-
+                    this.Controls.Add(allCards[i]);
                 }
-               
+
             }
 
 

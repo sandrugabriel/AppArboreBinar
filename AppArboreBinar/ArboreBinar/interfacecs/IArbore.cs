@@ -20,6 +20,8 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
 
         void minimul(T mini);
 
-        void getByPanel(T mainPanel, string part, T panel);
+        string getPartByPanel(T mainPanel);
+
+        T getByPanel(TreeNode<T> node, T mainPanel);
     }
 }

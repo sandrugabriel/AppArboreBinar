@@ -13,7 +13,7 @@ namespace AppArboreBinar.View.Panels
     public class PnlCard : Panel, IComparable<PnlCard>
     {
 
-        Button btnNr;
+       public Button btnNr;
         BunifuElipse eliThis;
         Form1 form;
 
@@ -45,8 +45,19 @@ namespace AppArboreBinar.View.Panels
 
         int IComparable<PnlCard>.CompareTo(PnlCard other)
         {
-          if(this ==  other) return 1;
-            return -1;
+            if (int.Parse(this.btnNr.Text) > int.Parse(other.btnNr.Text))
+            {
+                return 1;
+
+            }
+            else if (int.Parse(this.btnNr.Text) < int.Parse(other.btnNr.Text))
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

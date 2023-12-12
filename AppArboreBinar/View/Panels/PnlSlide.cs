@@ -15,8 +15,6 @@ namespace AppArboreBinar.View.Panels
         private System.Windows.Forms.PictureBox pctDesign;
         private System.Windows.Forms.Button btnHome;
         private System.Windows.Forms.PictureBox pctHome;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.PictureBox pctAdd;
         private System.Windows.Forms.Label lblMenu;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.PictureBox pctDelete;
@@ -42,12 +40,10 @@ namespace AppArboreBinar.View.Panels
             this.BackColor = System.Drawing.Color.FromArgb(18, 18, 39);
             //this.Dock = DockStyle.Left;
 
-            this.pctAdd = new System.Windows.Forms.PictureBox();
             this.pctDelete = new System.Windows.Forms.PictureBox();
             this.pctHome = new System.Windows.Forms.PictureBox();
             this.pctDesign = new System.Windows.Forms.PictureBox();
             this.btnHome = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.lblMenu = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
             this.pctMenu = new System.Windows.Forms.PictureBox();
@@ -56,23 +52,12 @@ namespace AppArboreBinar.View.Panels
             this.timer.Tick += new EventHandler(timer_Tick);
             this.timer.Interval = 5;
 
-            this.btnAdd.Controls.Add(this.pctAdd);
             this.btnDelete.Controls.Add(this.pctDelete);
             this.btnHome.Controls.Add(this.pctHome);
             this.Controls.Add(this.btnHome);
-            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.lblMenu);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.pctMenu);
-
-            // pctAdd
-            this.pctAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pctAdd.Image = Image.FromFile(Application.StartupPath + @"/images/add.png");
-            this.pctAdd.Location = new System.Drawing.Point(24, 2);
-            this.pctAdd.Name = "pctAdd";
-            this.pctAdd.Size = new System.Drawing.Size(54, 54);
-            this.pctAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pctAdd.Click += new EventHandler(btnAdd_Click);
 
             // 
             // pctDelete
@@ -115,22 +100,6 @@ namespace AppArboreBinar.View.Panels
             this.btnHome.Text = "              Home";
             this.btnHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnHome.Click += new EventHandler(btnHome_Click);
-
-            // btnAdd
-            this.btnAdd.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.FlatAppearance.BorderSize = 0;
-            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdd.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular);
-            this.btnAdd.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAdd.Location = new System.Drawing.Point(0, 227 + 79 + 79);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(600, 60);
-            this.btnAdd.TabIndex = 2;
-            this.btnAdd.Text = "              Add";
-            this.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdd.Click += new EventHandler(btnAdd_Click);
 
             // lblMenu
             this.lblMenu.AutoSize = true;
@@ -218,29 +187,16 @@ namespace AppArboreBinar.View.Panels
 
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-
-            this.form.removePnl("PnlHome");
-            this.form.removePnl("PnlSlide");
-            this.form.removePnl("PnlAdd");
-            this.form.removePnl("PnlLoad");
-            this.form.removePnl("PnlDelete");
-            this.form.Controls.Add(new PnlSlide(form));
-         //   this.form.Controls.Add(new PnlAdd(form, user));
-
-        }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
 
             this.form.removePnl("PnlHome");
             this.form.removePnl("PnlSlide");
-            this.form.removePnl("PnlAdd");
             this.form.removePnl("PnlLoad");
             this.form.removePnl("PnlDelete");
             this.form.Controls.Add(new PnlSlide(form));
-         //   this.form.Controls.Add(new PnlDelete(form, user));
+            this.form.Controls.Add(new PnlDelete(form));
 
         }
 

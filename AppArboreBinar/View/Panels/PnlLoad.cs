@@ -40,7 +40,7 @@ namespace AppArboreBinar.View.Panels
             allCards = new List<PnlCard>();
             text = text1;
 
-            this.Name = "PnlGenerareArbore";
+            this.Name = "PnlLoad";
             this.Size = new System.Drawing.Size(1420, 925);
             this.Location = new System.Drawing.Point(102, 44);
             this.BackColor = Color.FromArgb(15, 20, 54);

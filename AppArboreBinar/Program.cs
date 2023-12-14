@@ -1,4 +1,5 @@
-﻿using AppArboreBinar.View.Mockups;
+﻿using AppArboreBinar.ArboreBinar.interfacecs;
+using AppArboreBinar.View.Mockups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace AppArboreBinar
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
         }
 
 

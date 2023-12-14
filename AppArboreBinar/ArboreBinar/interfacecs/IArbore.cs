@@ -27,5 +27,17 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
         void setT(TreeNode<T> tree, T luat, T pus);
 
         string update(TreeNode<T> node);
+
+        void stergereNod(TreeNode<T> tree, TreeNode<T> nodeSters);
+
+        bool valid(TreeNode<T> node, string text);
+
+        TreeNode<T> getNodeByText(string text);
+
+        TreeNode<T> succesorulPrimulNod(TreeNode<T> treeNode);
+
+        void stergerePrimul(TreeNode<T> start);
+
+
     }
 }

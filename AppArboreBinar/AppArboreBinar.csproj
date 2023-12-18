@@ -235,6 +235,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Mockups\MockupAfisare.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Mockups\MockupAfisare.Designer.cs">
+      <DependentUpon>MockupAfisare.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Mockups\MockupArbore.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +252,9 @@
     </Compile>
     <Compile Include="View\Mockups\MockupCard.Designer.cs">
       <DependentUpon>MockupCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Panels\PnlAfisare.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="View\Panels\PnlCard.cs">
       <SubType>Component</SubType>
@@ -277,6 +286,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\Mockups\MockupAfisare.resx">
+      <DependentUpon>MockupAfisare.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Mockups\MockupArbore.resx">
       <DependentUpon>MockupArbore.cs</DependentUpon>
     </EmbeddedResource>

@@ -13,6 +13,7 @@ using Microsoft.VisualBasic.ApplicationServices;
 using System.IO;
 using System.Xml.Linq;
 using System.Runtime.Caching.Hosting;
+using System.Linq.Expressions;
 
 namespace AppArboreBinar.View.Panels
 {
@@ -33,10 +34,14 @@ namespace AppArboreBinar.View.Panels
         Button btnStergere;
         BunifuElipse elibtn;
 
-        Button btnSave;
-        BunifuElipse elibtnSave;
+        Button btnDLR;
+        BunifuElipse elibtnDLR;
 
-        BunifuTextBox txtStergere;
+        Button btnLDR;
+        BunifuElipse elibtnLDR;
+
+        Button btnLRD;
+        BunifuElipse elibtnLRD;
 
         string text;
         int id;
@@ -62,15 +67,20 @@ namespace AppArboreBinar.View.Panels
             this.pctDesign = new PictureBox();
             this.btnStergere = new Button();
             this.elibtn = new BunifuElipse();
-            this.txtStergere = new BunifuTextBox();
-            this.btnSave = new Button();
-            this.elibtnSave = new BunifuElipse();
+            this.btnDLR = new Button();
+            this.elibtnDLR = new BunifuElipse();
+
+            this.btnLDR = new Button();
+            this.elibtnLDR = new BunifuElipse();
+            this.btnLRD = new Button();
+            this.elibtnLRD = new BunifuElipse();
 
             this.Controls.Add(this.lblTile);
             this.Controls.Add(this.pctDesign);
             this.Controls.Add(this.btnStergere);
-            this.Controls.Add(this.txtStergere);
-            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnDLR);
+            this.Controls.Add(this.btnLDR);
+            this.Controls.Add(this.btnLRD);
 
             //lblTile
             this.lblTile.Location = new System.Drawing.Point(90, 64);
@@ -84,39 +94,50 @@ namespace AppArboreBinar.View.Panels
             this.pctDesign.BackColor = System.Drawing.Color.White;
 
             //btnStergere
-            this.btnStergere.Text = "Sterge un numar din arbore";
+            this.btnStergere.Text = "Sterge primul nod";
             this.btnStergere.Size = new Size(250,80);
-            this.btnStergere.Location = new Point(530,750);
+            this.btnStergere.Location = new Point(1050,750);
             this.btnStergere.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btnStergere.FlatAppearance.BorderSize = 0;
             this.btnStergere.FlatStyle = FlatStyle.Flat;
             this.btnStergere.Click += new EventHandler(btnStergere_Click);
-
             elibtn.TargetControl = btnStergere;
             elibtn.ElipseRadius = 25;
 
+            //btnDLR
+            this.btnDLR.Text = "Afisare in preordine";
+            this.btnDLR.Size = new Size(250, 80);
+            this.btnDLR.Location = new Point(150, 750);
+            this.btnDLR.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnDLR.FlatAppearance.BorderSize = 0;
+            this.btnDLR.Click += new EventHandler(btnDLR_Click);
+            this.btnDLR.FlatStyle = FlatStyle.Flat;
+            elibtnDLR.TargetControl = btnDLR;
+            elibtnDLR.ElipseRadius = 25;
 
-            //btnStergere
-            this.btnSave.Text = "Save";
-            this.btnSave.Size = new Size(150, 80);
-            this.btnSave.Location = new Point(780, 750);
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = FlatStyle.Flat;
-            this.btnSave.Click += new EventHandler(btnSave_Click);
-            this.btnSave.Visible = false;
 
-            elibtnSave.TargetControl = btnSave;
-            elibtnSave.ElipseRadius = 25;
+            //btnLDR
+            this.btnLDR.Text = "Afisare in inordine";
+            this.btnLDR.Size = new Size(250, 80);
+            this.btnLDR.Location = new Point(450, 750);
+            this.btnLDR.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnLDR.FlatAppearance.BorderSize = 0;
+            this.btnLDR.Click += new EventHandler(btnLDR_Click);
+            this.btnLDR.FlatStyle = FlatStyle.Flat;
+            elibtnLDR.TargetControl = btnLDR;
+            elibtnLDR.ElipseRadius = 25;
 
-            //txtText
-            this.txtStergere.Location = new System.Drawing.Point(300,760);
-            this.txtStergere.Size = new System.Drawing.Size(460, 60);
-            this.txtStergere.PlaceholderText = "Introduceti numarul pe care il doriti sters!";
-            this.txtStergere.PlaceholderForeColor = Color.DimGray;
-            this.txtStergere.Font = new System.Drawing.Font("Century Gothic", 13);
-            this.txtStergere.Visible = false;
-            this.txtStergere.ForeColor = Color.Black;
+
+            //btnLRD
+            this.btnLRD.Text = "Afisare in postordine";
+            this.btnLRD.Size = new Size(250, 80);
+            this.btnLRD.Location = new Point(750, 750);
+            this.btnLRD.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnLRD.FlatAppearance.BorderSize = 0;
+            this.btnLRD.Click += new EventHandler(btnLRD_Click);
+            this.btnLRD.FlatStyle = FlatStyle.Flat;
+            elibtnLRD.TargetControl = btnLRD;
+            elibtnLRD.ElipseRadius = 25;
 
             int semn = 0;
             string[] prop = text.Split(',');
@@ -139,133 +160,102 @@ namespace AppArboreBinar.View.Panels
 
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnLRD_Click(object sender, EventArgs e)
         {
-            if (txtStergere.Text.Equals(primul))
-            {
-                arbore.stergerePrimul(arbore.getNode());
-
-                StreamReader streamReader = new StreamReader(Application.StartupPath + @"/data/arbori.txt");
-
-                string t = "";
-
-                string final = "";
-
-                string[] prop = text.Split(',');
-                string figura = "";
-
-
-                while ((t = streamReader.ReadLine()) != null)
-                {
-                    if (!t.Split('|')[2].Equals(text))
-                    {
-                        final += t + "\n";
-                    }
-                    else
-                    {
-                        figura += t.Split('|')[0] + "|" + t.Split('|')[1] + "|";
-                    }
-                }
-
-                string numere = arbore.update(arbore.getNode());
-                numere = numere.Remove(numere.Length - 1);
-                MessageBox.Show(numere);
-                final += figura + numere + "\n";
-
-                streamReader.Close();
-
-                // MessageBox.Show(final);
-
-                StreamWriter streamWriter = new StreamWriter(Application.StartupPath + @"/data/arbori.txt");
-                streamWriter.Write(final);
-
-                streamWriter.Close();
-                this.form.removePnl("PnlLoad");
-                this.form.Controls.Add(new PnlLoad(form, numere));
-
-                return;
-            }
-            else if (arbore.valid(arbore.getNode(), txtStergere.Text))
-            {
-
-
-                this.btnSave.Visible = false;
-                this.txtStergere.Visible = false;
-                this.btnStergere.Visible = true;
-
-                TreeNode<PnlCard> sters = arbore.getNodeByText(txtStergere.Text);
-
-                arbore.stergereNod(arbore.getNode(), sters);
-
-                StreamReader streamReader = new StreamReader(Application.StartupPath + @"/data/arbori.txt");
-
-                string t = "";
-
-                string final = "";
-
-                string[] prop = text.Split(',');
-                string figura = "";
-
-
-                while ((t = streamReader.ReadLine()) != null)
-                {
-                    if (!t.Split('|')[2].Equals(text))
-                    {
-                        final += t + "\n";
-                    }
-                    else
-                    {
-                        figura += t.Split('|')[0] + "|" + t.Split('|')[1] + "|";
-                    }
-                }
-
-                string numere = "";
-
-                for (int i = 0; i < prop.Length; i++)
-                {
-
-                    if (prop[i] != txtStergere.Text && i < prop.Length - 1)
-                    {
-                        numere += prop[i] + ",";
-                        figura += prop[i] + ",";
-                    }
-                    if (i == prop.Length - 1 && prop[i] != txtStergere.Text)
-                    {
-                        figura += prop[i];
-                        numere += prop[i];
-                    }
-                }
-
-                final += figura + "\n";
-
-                streamReader.Close();
-
-                // MessageBox.Show(final);
-
-                StreamWriter streamWriter = new StreamWriter(Application.StartupPath + @"/data/arbori.txt");
-                streamWriter.Write(final);
-
-                streamWriter.Close();
-                this.form.removePnl("PnlLoad");
-                this.form.Controls.Add(new PnlLoad(form, numere));
-
-            }
-            else
-            {
-                MessageBox.Show("Numarul nu a fost gasit!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            this.removePnlLoad("PnlAfisare");
+            List<PnlCard> cards = new List<PnlCard>();
+            arbore.afisarePostordine(arbore.getNode(),ref cards);
+            PnlAfisare pnlAfisare = new PnlAfisare(form,"Afisare in postordine:",cards);
+            pnlAfisare.Location = new Point(260,560);
+            this.Controls.Add(pnlAfisare);
 
         }
+        public void removePnlLoad(string pnl)
+        {
+
+            Control control = null;
+
+            foreach (Control c in this.Controls)
+            {
+
+                if (c.Name.Equals(pnl))
+                {
+                    control = c;
+                }
+
+            }
+
+            this.Controls.Remove(control);
+
+        }
+
+        private void btnLDR_Click(object sender, EventArgs e)
+        {
+
+            this.removePnlLoad("PnlAfisare");
+            List<PnlCard> cards = new List<PnlCard>();
+            arbore.afisareiInordine(arbore.getNode(), ref cards);
+            PnlAfisare pnlAfisare = new PnlAfisare(form, "Afisare in inordine:", cards);
+            pnlAfisare.Location = new Point(260, 560);
+            this.Controls.Add(pnlAfisare);
+
+        }
+
+        private void btnDLR_Click(object sender, EventArgs e)
+        {
+            this.removePnlLoad("PnlAfisare");
+            List<PnlCard> cards = new List<PnlCard>();
+            arbore.afisarePreordine(arbore.getNode(), ref cards);
+            PnlAfisare pnlAfisare = new PnlAfisare(form, "Afisare in preordine:", cards);
+            pnlAfisare.Location = new Point(260, 560);
+            this.Controls.Add(pnlAfisare);
+
+        }
+
 
         private void btnStergere_Click(object sender, EventArgs e)
         {
 
-          //  TreeNode<PnlCard> succ = arbore.succesorulPrimulNod(arbore.getNode());
+            arbore.stergerePrimul(arbore.getNode());
+
+            StreamReader streamReader = new StreamReader(Application.StartupPath + @"/data/arbori.txt");
+
+            string t = "";
+
+            string final = "";
+
+            string[] prop = text.Split(',');
+            string figura = "";
 
 
-            this.txtStergere.Visible = true;
-            this.btnStergere.Visible = false;
-            this.btnSave.Visible = true;
+            while ((t = streamReader.ReadLine()) != null)
+            {
+                if (!t.Split('|')[2].Equals(text))
+                {
+                    final += t + "\n";
+                }
+                else
+                {
+                    figura += t.Split('|')[0] + "|" + t.Split('|')[1] + "|";
+                }
+            }
+
+            string numere = arbore.update(arbore.getNode());
+            numere = numere.Remove(numere.Length - 1);
+            MessageBox.Show(numere);
+            final += figura + numere + "\n";
+
+            streamReader.Close();
+
+            // MessageBox.Show(final);
+
+            StreamWriter streamWriter = new StreamWriter(Application.StartupPath + @"/data/arbori.txt");
+            streamWriter.Write(final);
+
+            streamWriter.Close();
+            this.form.removePnl("PnlLoad");
+            this.form.Controls.Add(new PnlLoad(form, numere));
+
 
         }
 
@@ -273,7 +263,7 @@ namespace AppArboreBinar.View.Panels
         {
             //7,-1,9,18,31,2
             PnlCard mainCard = new PnlCard(form, numbers[0]);
-            mainCard.Location = new Point(560, 310);
+            mainCard.Location = new Point(560, 150);
 
             allCards.Add(mainCard);
             arbore.add(mainCard, arbore.getNode());

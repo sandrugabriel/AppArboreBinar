@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppArboreBinar.View.Panels;
 
 namespace AppArboreBinar.ArboreBinar.interfacecs
 {
@@ -38,6 +39,11 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
 
         void stergerePrimul(TreeNode<T> start);
 
+        void afisarePreordine(TreeNode<T> start,ref List<PnlCard> cards);
+
+        void afisareiInordine(TreeNode<T> start, ref List<PnlCard> cards);
+
+        void afisarePostordine(TreeNode<T> start, ref List<PnlCard> cards);
 
     }
 }

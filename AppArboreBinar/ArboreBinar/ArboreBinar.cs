@@ -512,6 +512,46 @@ namespace AppArboreBinar.ArboreBinar
 
         }
 
- 
+        public void afisarePreordine(TreeNode<T> start, ref List<PnlCard> nrs)
+        {
+
+            if (start != null)
+            {
+                nrs.Add(start.Data);
+                //Console.WriteLine(start.Data);
+
+                afisarePreordine(start.Left,ref nrs);
+                afisarePreordine(start.Right,ref nrs);
+            }
+
+
+
+        }
+
+        public void afisareiInordine(TreeNode<T> start, ref List<PnlCard> cards)
+        {
+            if (start != null)
+            {
+                afisareiInordine(start.Left,ref cards);
+                cards.Add(start.Data);
+
+                //Console.WriteLine(start.Data);
+                afisareiInordine(start.Right, ref cards);
+            }
+        }
+
+        public void afisarePostordine(TreeNode<T> start, ref List<PnlCard> cards)
+        {
+            if (start != null)
+            {
+                afisarePostordine(start.Left, ref cards);
+                afisarePostordine(start.Right, ref cards);
+                cards.Add(start.Data);
+
+                //Console.WriteLine(start.Data);
+            }
+        }
+
+
     }
 }

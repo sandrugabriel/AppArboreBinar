@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml.Linq;
 using System.Runtime.Caching.Hosting;
 using System.Linq.Expressions;
+using System.Diagnostics;
 
 namespace AppArboreBinar.View.Panels
 {
@@ -54,7 +55,7 @@ namespace AppArboreBinar.View.Panels
             numbers = new List<int>();
             allCards = new List<PnlCard>();
             text = text1;
-           // MessageBox.Show(text);
+            // MessageBox.Show(text);
 
             this.Name = "PnlLoad";
             this.Size = new System.Drawing.Size(1420, 925);
@@ -95,8 +96,8 @@ namespace AppArboreBinar.View.Panels
 
             //btnStergere
             this.btnStergere.Text = "Sterge primul nod";
-            this.btnStergere.Size = new Size(250,80);
-            this.btnStergere.Location = new Point(1050,750);
+            this.btnStergere.Size = new Size(250, 80);
+            this.btnStergere.Location = new Point(1050, 750);
             this.btnStergere.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btnStergere.FlatAppearance.BorderSize = 0;
             this.btnStergere.FlatStyle = FlatStyle.Flat;
@@ -164,12 +165,13 @@ namespace AppArboreBinar.View.Panels
         {
             this.removePnlLoad("PnlAfisare");
             List<PnlCard> cards = new List<PnlCard>();
-            arbore.afisarePostordine(arbore.getNode(),ref cards);
-            PnlAfisare pnlAfisare = new PnlAfisare(form,"Afisare in postordine:",cards);
-            pnlAfisare.Location = new Point(260,560);
+            arbore.afisarePostordine(arbore.getNode(), ref cards);
+            PnlAfisare pnlAfisare = new PnlAfisare(form, "Afisare in postordine:", cards);
+            pnlAfisare.Location = new Point(260, 560);
             this.Controls.Add(pnlAfisare);
 
         }
+
         public void removePnlLoad(string pnl)
         {
 
@@ -211,7 +213,6 @@ namespace AppArboreBinar.View.Panels
             this.Controls.Add(pnlAfisare);
 
         }
-
 
         private void btnStergere_Click(object sender, EventArgs e)
         {
@@ -264,6 +265,8 @@ namespace AppArboreBinar.View.Panels
             //7,-1,9,18,31,2
             PnlCard mainCard = new PnlCard(form, numbers[0]);
             mainCard.Location = new Point(560, 150);
+            mainCard.btnNr.DragEnter += all_DragEnter;
+            mainCard.btnNr.DragDrop += all_DragDrop;
 
             allCards.Add(mainCard);
             arbore.add(mainCard, arbore.getNode());
@@ -275,7 +278,8 @@ namespace AppArboreBinar.View.Panels
 
                 //  MessageBox.Show(numbers[i].ToString());
                 PnlCard card = new PnlCard(form, numbers[i]);
-
+                card.btnNr.DragEnter += all_DragEnter;
+                card.btnNr.DragDrop += all_DragDrop;
                 arbore.add(card, arbore.getNode());
                 allCards.Add(card);
             }
@@ -293,7 +297,7 @@ namespace AppArboreBinar.View.Panels
                 if (card1 != null)
                 {
                     if (part == "left")
-                        allCards[i].Location = new Point(card1.Location.X -180, card1.Location.Y + 70);
+                        allCards[i].Location = new Point(card1.Location.X - 180, card1.Location.Y + 70);
                     if (part == "right")
                         allCards[i].Location = new Point(card1.Location.X + 180, card1.Location.Y + 70);
 
@@ -301,12 +305,92 @@ namespace AppArboreBinar.View.Panels
                 }
 
             }
-/*
-            arbore.stergereNod(arbore.getNode(), arbore.getNode().Right);
+            /*
+                        arbore.stergereNod(arbore.getNode(), arbore.getNode().Right);
 
-            MessageBox.Show(arbore.getNode().Right.Data.btnNr.Text);
-            //arbore.afisare();
-*/
+                        MessageBox.Show(arbore.getNode().Right.Data.btnNr.Text);
+                        //arbore.afisare();
+            */
+        }
+
+        Button d;
+        int ct = 0;
+
+        private void all_DragEnter(object sender, DragEventArgs e)
+        {
+
+            e.Effect = DragDropEffects.Move;
+            if (sender is Button button && ct == 0)
+            {
+                d = button;
+                ct++;
+            }
+
+            if (ct == 2) ct = 0;
+        }
+
+        public Button findByText(string text)
+        {
+            for (int i = 0; i < allCards.Count; i++)
+            {
+                if (allCards[i].btnNr.Text.Equals(text))
+                    return allCards[i].btnNr;
+            }
+
+            return null;
+        }
+
+        public PnlCard findByButton(Button btn)
+        {
+            if (btn == null) return null;
+            else
+            {
+                for (int i = 0; i < allCards.Count; i++)
+                {
+                    if (allCards[i].btnNr == btn) return allCards[i];
+                }
+            }
+
+            return null;
+        }
+
+        private void all_DragDrop(object sender, DragEventArgs e)
+        {
+
+            string text = sender.ToString().Remove(0, 35);
+            //  MessageBox.Show(text);
+
+            Button btnDestinatie = findByText(text);
+            PnlCard destinatie = findByButton(btnDestinatie);
+
+            Button btnSursa = d;
+            PnlCard sursa = findByButton(btnSursa);
+
+            //  arbore.setT(arbore.getNode(),sursa,destinatie);
+
+            string text1 = sursa.btnNr.Text;
+            string text2 = destinatie.btnNr.Text;
+            destinatie.btnNr.Text = text1;
+            sursa.btnNr.Text = text2;
+
+          //  MessageBox.Show(arbore.getNode().Left.Data.btnNr.Text);//18
+
+            if (arbore.verificareArbore(arbore.getNode()) == true)
+            {
+                MessageBox.Show("Nodul s-a schimbat!","Succes",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+            }
+            else
+            {
+                MessageBox.Show("Nu se potate schimba nod!!\nNu o sa mai fie arbore binar!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+
+                string text3 = sursa.btnNr.Text;
+                string text4 = destinatie.btnNr.Text;
+                destinatie.btnNr.Text = text3;
+                sursa.btnNr.Text = text4;
+            }
+
+            ct = 0;
         }
 
     }

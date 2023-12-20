@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using AppArboreBinar.View.Panels;
 using System.Web.UI.Design;
 using System.Reflection.Context;
+using System.Security.Cryptography;
 
 namespace AppArboreBinar.ArboreBinar
 {
@@ -19,6 +20,11 @@ namespace AppArboreBinar.ArboreBinar
     {
 
         private TreeNode<T> _root = null;
+
+        public void setNode(TreeNode<T> node)
+        {
+            _root = node;   
+        }
 
         public TreeNode<T> getNode() { return  _root; }
 
@@ -239,49 +245,30 @@ namespace AppArboreBinar.ArboreBinar
 
         public TreeNode<T> find(TreeNode<T> current, T cautat)
         {
-            ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
-
-            TreeNode<T> treeNode = current;
-
-            T data;
-
-            do
+            if (current == null) return null;
+            else if (current.Data.Equals(cautat))
             {
+                return current;
+            }
 
-                if (treeNode.Left != null)
-                {
-                    coada.push(treeNode.Left);
+            var l = find(current.Left,cautat);
+            if (l != null) return l;
 
-                }
-
-                if (treeNode.Right != null)
-                {
-                    coada.push(treeNode.Right);
-                }
-
-                if (treeNode.Data.CompareTo(cautat) == 0)
-                {
-                    return treeNode;
-                }
-
-                treeNode = coada.top();
-
-                coada.pop();
-
-            } while (treeNode != null);
-
-            return null;
+            return find(current.Right,cautat);
         }
 
-        public void setT(TreeNode<T> tree, T luat, T pus)
+        public void setT(TreeNode<T> start,T luat, T pus)
         {
 
-            TreeNode<T> card1 = find(tree, luat);
-            TreeNode<T> card2 = find(tree, pus);
+            TreeNode<T> card1 = find(_root, luat);
+            TreeNode<T> card2 = find(_root, pus);
 
             T aux = card1.Data;
             card1.Data = card2.Data;
             card2.Data = aux;
+
+            start = _root;
+           // MessageBox.Show(start.Left.Data.btnNr.Text);
 
         }
 
@@ -442,7 +429,7 @@ namespace AppArboreBinar.ArboreBinar
 
           //  MessageBox.Show(start.Data.btnNr.Text);
 
-           MessageBox.Show(update(start));
+        //   MessageBox.Show(update(start));
 
         }
 
@@ -552,6 +539,20 @@ namespace AppArboreBinar.ArboreBinar
             }
         }
 
+        public bool verificareArbore(TreeNode<T> node)
+        {
+           if(node == null)
+            {
+                return true;
+            }
 
+            if (node.Left != null && int.Parse(node.Data.btnNr.Text) < int.Parse(node.Left.Data.btnNr.Text))
+                return false;
+
+            if (node.Right != null && int.Parse(node.Data.btnNr.Text) > int.Parse(node.Right.Data.btnNr.Text))
+                return false;
+
+            return verificareArbore(node.Left) && verificareArbore(node.Right);
+        }
     }
 }

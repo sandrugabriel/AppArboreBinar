@@ -13,6 +13,8 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
     {
         TreeNode<T> getNode();
 
+        void setNode(TreeNode<T> node);
+
         void add(T data, TreeNode<T> aux);
 
         void afisare();
@@ -25,7 +27,7 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
 
         T getByPanel(TreeNode<T> node, T mainPanel);
 
-        void setT(TreeNode<T> tree, T luat, T pus);
+        void setT(TreeNode<T> start,T luat, T pus);
 
         string update(TreeNode<T> node);
 
@@ -44,6 +46,8 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
         void afisareiInordine(TreeNode<T> start, ref List<PnlCard> cards);
 
         void afisarePostordine(TreeNode<T> start, ref List<PnlCard> cards);
+
+        bool verificareArbore(TreeNode<T> start);
 
     }
 }

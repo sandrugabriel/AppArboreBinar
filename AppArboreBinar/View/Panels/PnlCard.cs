@@ -25,7 +25,7 @@ namespace AppArboreBinar.View.Panels
             this.Name = "PnlCard";
             this.Size = new System.Drawing.Size(146, 63);
             this.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
-
+            this.MouseDown += this_MouseDown;
 
             this.btnNr = new Button();
             this.eliThis = new BunifuElipse();

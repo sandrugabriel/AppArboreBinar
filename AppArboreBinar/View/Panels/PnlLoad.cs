@@ -15,6 +15,8 @@ using System.Xml.Linq;
 using System.Runtime.Caching.Hosting;
 using System.Linq.Expressions;
 using System.Diagnostics;
+using System.Management;
+using System.Net.PeerToPeer.Collaboration;
 
 namespace AppArboreBinar.View.Panels
 {
@@ -47,6 +49,12 @@ namespace AppArboreBinar.View.Panels
         Button btndelete;
         BunifuElipse eliDelete;
         TextBox txtText;
+
+        Button btnAddNode;
+        BunifuElipse eliAdd;
+        TextBox txtAdd;
+        Button btnaddSave;
+        BunifuElipse eliaddSave;
 
         string text;
         int id;
@@ -84,6 +92,12 @@ namespace AppArboreBinar.View.Panels
             eliDelete = new BunifuElipse();
             txtText = new TextBox();
 
+            btnAddNode = new Button();
+            eliAdd = new BunifuElipse();
+            txtAdd = new TextBox();
+            btnaddSave = new Button();
+            eliaddSave = new BunifuElipse();
+
             this.Controls.Add(this.lblTile);
             this.Controls.Add(this.pctDesign);
             this.Controls.Add(this.btnStergere);
@@ -92,7 +106,9 @@ namespace AppArboreBinar.View.Panels
             this.Controls.Add(this.btnLRD);
             this.Controls.Add(this.btndelete);
             this.Controls.Add(this.txtText);
-
+            this.Controls.Add(this.btnAddNode);
+            this.Controls.Add(this.btnaddSave);
+            this.Controls.Add(this.txtAdd);
 
             //lblTile
             this.lblTile.Location = new System.Drawing.Point(90, 64);
@@ -119,7 +135,7 @@ namespace AppArboreBinar.View.Panels
             //btnDLR
             this.btnDLR.Text = "Afisare in preordine";
             this.btnDLR.Size = new Size(250, 80);
-            this.btnDLR.Location = new Point(150, 750);
+            this.btnDLR.Location = new Point(270, 750);
             this.btnDLR.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btnDLR.FlatAppearance.BorderSize = 0;
             this.btnDLR.Click += new EventHandler(btnDLR_Click);
@@ -131,7 +147,7 @@ namespace AppArboreBinar.View.Panels
             //btnLDR
             this.btnLDR.Text = "Afisare in inordine";
             this.btnLDR.Size = new Size(250, 80);
-            this.btnLDR.Location = new Point(450, 750);
+            this.btnLDR.Location = new Point(530, 750);
             this.btnLDR.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btnLDR.FlatAppearance.BorderSize = 0;
             this.btnLDR.Click += new EventHandler(btnLDR_Click);
@@ -143,7 +159,7 @@ namespace AppArboreBinar.View.Panels
             //btnLRD
             this.btnLRD.Text = "Afisare in postordine";
             this.btnLRD.Size = new Size(250, 80);
-            this.btnLRD.Location = new Point(750, 750);
+            this.btnLRD.Location = new Point(790, 750);
             this.btnLRD.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btnLRD.FlatAppearance.BorderSize = 0;
             this.btnLRD.Click += new EventHandler(btnLRD_Click);
@@ -162,12 +178,39 @@ namespace AppArboreBinar.View.Panels
             this.btndelete.Location = new Point(1210, 765);
             this.btndelete.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
             this.btndelete.FlatAppearance.BorderSize = 0;
-            this.btndelete.Click += new EventHandler(btnLRD_Click);
             this.btndelete.FlatStyle = FlatStyle.Flat;
             this.btndelete.Click += new EventHandler(btnStergere_Click);
             eliDelete.TargetControl = btndelete;
             eliDelete.ElipseRadius = 25;
             this.btndelete.Visible = false;
+
+            //btnadd
+            this.btnAddNode.Text = "Add Nod";
+            this.btnAddNode.Size = new Size(250, 80);
+            this.btnAddNode.Location = new Point(10, 750);
+            this.btnAddNode.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnAddNode.FlatAppearance.BorderSize = 0;
+            this.btnAddNode.FlatStyle = FlatStyle.Flat;
+            this.btnAddNode.Click += new EventHandler(btnAdd_Click);
+            eliAdd.TargetControl = btnAddNode;
+            eliAdd.ElipseRadius = 25;
+
+            //btnaddsave
+            this.btnaddSave.Text = "Save";
+            this.btnaddSave.Size = new Size(130, 50);
+            this.btnaddSave.Location = new Point(130, 765);
+            this.btnaddSave.BackColor = System.Drawing.Color.FromArgb(15, 20, 35);
+            this.btnaddSave.FlatAppearance.BorderSize = 0;
+            this.btnaddSave.FlatStyle = FlatStyle.Flat;
+            this.btnaddSave.Click += new EventHandler(btnaddSave_Click);
+            eliaddSave.TargetControl = btnaddSave;
+            eliaddSave.ElipseRadius = 25;
+            this.btnaddSave.Visible = false;
+
+            //txtadd
+            this.txtAdd.Location = new Point(20, 770);
+            this.txtAdd.Size = new Size(100, 50);
+            this.txtAdd.Visible = false;
 
             int semn = 0;
             string[] prop = text.Split(',');
@@ -188,6 +231,69 @@ namespace AppArboreBinar.View.Panels
 
             carduriDinamice();
 
+        }
+
+        private void btnaddSave_Click(object sender, EventArgs e)
+        {
+            int nr;
+
+            bool succes = int.TryParse(txtAdd.Text, out nr);
+
+            if (succes)
+            {
+
+                this.btnaddSave.Visible = false;
+                this.txtAdd.Visible = false;
+                this.btnAddNode.Visible = true;
+
+                StreamReader streamReader = new StreamReader(Application.StartupPath+ @"/data/arbori.txt");
+
+                string t = "";
+                string final = "";
+                string nod = "";
+                while((t = streamReader.ReadLine()) != null)
+                {
+                    if (!t.Split('|')[2].Equals(text))
+                    {
+                        final += t+"\n";
+                    }
+                    else
+                    {
+                        nod = t.Split('|')[0] + "|" + t.Split('|')[1] + "|";
+                    }
+                }
+
+                nod += text + "," + nr.ToString();
+
+                final += nod;
+
+              //  MessageBox.Show(final);
+                streamReader.Close();
+
+                StreamWriter streamWriter = new StreamWriter(Application.StartupPath + @"/data/arbori.txt");
+
+                streamWriter.Write(final);
+                streamWriter.Close();
+
+                string numere = text + "," + nr.ToString();
+
+                this.form.removePnl("PnlLoad");
+                //MessageBox.Show(nod);
+                this.form.Controls.Add(new PnlLoad(form, numere));
+
+            }
+            else
+            {
+                MessageBox.Show("Nu a-ti introdus un numar!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            this.btnAddNode.Visible = false;
+            this.btnaddSave.Visible = true;
+            this.txtAdd.Visible = true;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

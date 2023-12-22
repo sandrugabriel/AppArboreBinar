@@ -27,15 +27,19 @@ namespace AppArboreBinar.View.Panels
         BunifuTextBox txtText;
         Panel pnlAdd;
         Button btnSave;
-        
+
+        int ct1;
+
+        int coloane;
         public PnlHome(Form1 form1)
         {
             form = form1;
 
-            this.Size = new System.Drawing.Size(1420, 925);
+            this.Size = new System.Drawing.Size(1420, 860);
             this.Location = new System.Drawing.Point(102, 44);
             this.BackColor = Color.FromArgb(15, 20, 54);
             this.Name = "PnlHome";
+            this.AutoScroll = true;
             //  this.Dock = DockStyle.Fill;
 
             this.lblTile = new Label();
@@ -111,7 +115,10 @@ namespace AppArboreBinar.View.Panels
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Click += new EventHandler(btnSave_Click);
 
-            createCard(3);
+            ct1 = 0;
+            coloane = 3;
+            createCard(coloane);
+          
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -208,13 +215,17 @@ namespace AppArboreBinar.View.Panels
                 {
                     x = 160;
                     y += 150;
+
+                    if(ct1==0)
+                    nr++;
+                    ct1++;
+                    ct = 0;
                 }
 
                 if (y > this.Height)
                 {
                     this.AutoScroll = true;
                 }
-
 
 
 

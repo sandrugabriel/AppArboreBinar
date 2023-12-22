@@ -304,84 +304,51 @@ namespace AppArboreBinar.ArboreBinar
 
         }
 
-        public void stergereNod(TreeNode<T> tree, TreeNode<T> nodeSters)
+        public TreeNode<T> stergeNod(TreeNode<T> start, int val)
         {
+            if (start == null)
+                return start;
 
-            ICoada<TreeNode<T>> coada = new Coada<TreeNode<T>>();
-
-            TreeNode<T> treeNode = tree;
-
-            do
+            if (val < int.Parse(start.Data.btnNr.Text))
             {
-                //Console.WriteLine(treeNode.Data);
-                if(treeNode.Left != null)
-                if(treeNode.Left.Data.CompareTo(nodeSters.Data) == 0)
-                {
 
-                    TreeNode<T> primul = treeNode;
+                start.Left = stergeNod(start.Left, val);
+            }
 
-                    if(nodeSters.Left != null)
-                    {
-                        TreeNode<T> legat = nodeSters.Left;
+            else if (val > int.Parse(start.Data.btnNr.Text))
+            {
 
-                        primul.Left = legat;
+                start.Right = stergeNod(start.Right, val);
+            }
 
-                    }
+            else
+            {
 
-                    if (nodeSters.Right != null)
-                    {
-                        TreeNode<T> legat = nodeSters.Right;
+                if (start.Right == null)
+                    return start.Left;
 
-                        primul.Right = legat;
-
-                    }
+                else if (start.Left == null)
+                    return start.Right;
 
 
-                }
+                TreeNode<T> succesor;
+                if (start.Right != null)
+                    succesor = start.Right;
 
-                if(treeNode.Right != null)
-                if (treeNode.Right.Data.CompareTo(nodeSters.Data) == 0)
-                {
+                else 
+                    succesor = start.Left;
 
-                    TreeNode<T> primul = treeNode;
-                       // MessageBox.Show(primul.Data.btnNr.Text);
-                    if (nodeSters.Left != null)
-                    {
-                        TreeNode<T> legat = nodeSters.Left;
+                start.Data = succesor.Data;
+                start.Right = stergeNod(start.Right, int.Parse(succesor.Data.btnNr.Text));
+            }
+            return start;
+        }
 
-                        primul.Left = legat;
-
-                    }
-
-                    if (nodeSters.Right != null)
-                    {
-                        TreeNode<T> legat = nodeSters.Right;
-
-                        primul.Right = legat;
-
-                    }
-
-
-                }
-
-                if (treeNode.Left != null)
-                {
-                    coada.push(treeNode.Left);
-                }
-
-                if (treeNode.Right != null)
-                {
-                    coada.push(treeNode.Right);
-                }
-
-                treeNode = coada.top();
-
-                coada.pop();
-
-            } while (treeNode != null);
-
-
-
+        public TreeNode<T> minim(TreeNode<T> nod)
+        {
+            while (nod.Left != null)
+                nod = nod.Left;
+            return nod;
         }
 
         public TreeNode<T> succesorulPrimulNod(TreeNode<T> start)

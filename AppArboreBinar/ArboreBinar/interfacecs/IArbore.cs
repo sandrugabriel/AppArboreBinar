@@ -31,7 +31,7 @@ namespace AppArboreBinar.ArboreBinar.interfacecs
 
         string update(TreeNode<T> node);
 
-        void stergereNod(TreeNode<T> tree, TreeNode<T> nodeSters);
+        TreeNode<T> stergeNod(TreeNode<T> start, int val);
 
         bool valid(TreeNode<T> node, string text);
 
